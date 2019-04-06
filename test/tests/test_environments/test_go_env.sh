@@ -8,7 +8,7 @@ cleanup() {
     fission fn delete --name hello-go-poolmgr || true
     fission fn delete --name hello-go-nd || true
     fission env delete --name go || true
-    rm $ROOT/examples/go/vendor-example/vendor.zip || true
+    rm $ROOT/examples/go/module-example/module.zip || true
 }
 
 wait_for_builder() {
@@ -86,10 +86,10 @@ timeout 60 bash -c "test_fn hello-go-poolmgr 'Hello'"
 log "Testing new deployment function"
 timeout 60 bash -c "test_fn hello-go-nd 'Hello'"
 
-# Create zip file without top level directory (vendor-example)
-cd vendor-example && zip -r vendor.zip *
+# Create zip file without top level directory (module-example)
+cd module-example && zip -r module.zip *
 
-pkgName=$(fission package create --src vendor.zip --env go| cut -f2 -d' '| tr -d \')
+pkgName=$(fission package create --src module.zip --env go| cut -f2 -d' '| tr -d \')
 
 # wait for build to finish at most 90s
 timeout 90 bash -c "waitBuild $pkgName"
